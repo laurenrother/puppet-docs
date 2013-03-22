@@ -55,7 +55,7 @@ If you are trying to upgrade Puppet Dashboard instead of installing it from scra
 Installing Dependencies
 ------------
 
-Dashboard is distributed with the version of Rails it uses, Ruby-1.8.7 packages, as well as most of its other dependencies, but you'll have to ensure that the following software is installed:
+Dashboard is distributed with the version of Rails it uses, Ruby 1.8.7 packages where required by older versions, as well as most of its other dependencies, but you'll have to ensure that the following software is installed:
 
 * [RubyGems](http://rubygems.org/)
 * [Rake](http://github.com/jimweirich/rake) version 0.8.3 or newer
