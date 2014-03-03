@@ -16,7 +16,6 @@ canonical: "/puppet/latest/reference/modules_installing.html"
 Installing Modules
 =====
 
-
 > ![Windows note](/images/windows-logo-small.jpg) The puppet module tool does not currently work on Windows.
 >
 > * Windows nodes which pull configurations from a Linux or Unix puppet master can use any Forge modules installed on the master. Continue reading to learn how to use the module tool on your puppet master.
