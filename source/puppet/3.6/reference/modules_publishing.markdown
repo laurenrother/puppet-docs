@@ -47,7 +47,7 @@ This guide assumes that you have already [written a useful Puppet module][fundam
 >
 > Because many users have published their own versions of modules with common names ("mysql," "bacula," etc.), the Puppet Forge requires module names to have a username prefix. That is, if a user named "puppetlabs" maintained a "mysql" module, it would be known to the Puppet Forge as `puppetlabs-mysql`.
 >
-> **Be sure to use this long name in your module's [metadata.json file](#write-a-metadata.json-file).** However, you do not have to rename the module's directory, and can leave the module in your active modulepath --- the build action will do the right thing as long as the metada.json is correct.
+> **Be sure to use this long name in your module's [metadata.json file](#write-a-metadatajson-file).** However, you do not have to rename the module's directory, and can leave the module in your active modulepath --- the build action will do the right thing as long as the metadata.json is correct.
 
 > ### Another Note on Module Names
 >
@@ -113,7 +113,7 @@ The metadata.json is a JSON-formatted file containing information about your mod
 * `license` --- REQUIRED. The license under which your module is made available.
 * `summary` --- REQUIRED. A one-line description of your module.
 * `source` --- REQUIRED. The source repository for your module.
-* `dependencies` --- REQUIRED. A list of the other modules that your module depends on to function. See [Dependencies in metadata.json](#dependencies-in-metadata.json) below for more details.
+* `dependencies` --- REQUIRED. A list of the other modules that your module depends on to function. See [Dependencies in metadata.json](#dependencies-in-metadatajson) below for more details.
 * `project_page` --- Your module's website.
 * `issues_url` --- A link to your module's issue tracker.
 
@@ -167,11 +167,11 @@ Build Your Module
 With Puppet 3.6's updates to the puppet module tool (PMT), the process for  building your module will be slightly different based on the files in your module's directory. 
 
 * [I generated a new module using `puppet module generate`](#brand-new-module)
-* [I have a Modulefile and no metadata.json](#modulefile-no-metadata.json)
-* [I have a Modulefile and a metadata.json](#modulefile-and-metadata.json)
-* [I have a Modulefile and a partial* metadata.json](#modulefile-and-partial-metadata.json) 
+* [I have a Modulefile and no metadata.json](#modulefile-no-metadatajson)
+* [I have a Modulefile and a metadata.json](#modulefile-and-metadatajson)
+* [I have a Modulefile and a partial* metadata.json](#modulefile-and-partial-metadatajson) 
 
-**How do you know if your metadata.json is partial or complete?** For your metadata.json to be complete, it must contain all the metadata fields listed in the [Write a metadata.json file](#write-a-metadata.json-file) section above. If any of these fields are missing, your metadata.json is considered partial: name, version, author, license, summary, source, dependencies.
+**How do you know if your metadata.json is partial or complete?** For your metadata.json to be complete, it must contain all the metadata fields listed in the [Write a metadata.json file](#write-a-metadatajson-file) section above. If any of these fields are missing, your metadata.json is considered partial: name, version, author, license, summary, source, dependencies.
 
 ###Brand new module
 
