@@ -98,6 +98,7 @@ The metadata.json is a JSON-formatted file containing information about your mod
 
 Your metadata.json will look something like
 
+```
     {
       "name": "examplecorp-mymodule",
       "version": "0.0.1",
@@ -124,10 +125,9 @@ Your metadata.json will look something like
       "dependencies": [
         { "name": "puppetlabs/stdlib", "version_requirement": ">=3.2.0 <5.0.0" },
         { "name": "puppetlabs/firewall", "version_requirement": ">= 0.0.4" },
-      ]
-"
-        
+      ] 
     }
+```
 
 ###Fields in metadata.json 
 
