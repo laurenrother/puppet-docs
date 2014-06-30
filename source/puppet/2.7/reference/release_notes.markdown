@@ -2,10 +2,56 @@
 layout: default
 title: Puppet 2.7 Release Notes
 description: Puppet release notes for version 2.7.x.
+canonical: "/puppet/latest/reference/release_notes.html"
 ---
 
 Puppet 2.7 Release Notes
 ------------------------
+
+[CVE-2014-3248]: http://puppetlabs.com/security/cve/cve-2014-3248
+
+## Puppet 2.7.26
+
+Released June 10, 2014.
+
+2.7.26 is a security fix release in the Puppet 2.7 series. It has no other bug fixes or new features.
+
+### Security Fix
+
+#### [CVE-2014-3248 (An attacker could convince an administrator to unknowingly execute malicious code on platforms with Ruby 1.9.1 and earlier)][CVE-2014-3248]
+
+On platforms running Ruby 1.9.1 or earlier, previous code would load Ruby source files from the current working directory. This could lead to the execution of arbitrary code during a puppet run.
+
+## Puppet 2.7.25
+
+2.7.25 is a bug fix release of the Puppet 2.7 series. It contains an important
+fix for a regression from the fix for CVE-2013-4969, which caused the default
+file mode to be 0600 instead of 0644.
+
+* Andrew Parker (1):
+     * 233e80 (Maint) Add rake task for running specs on win
+
+* Dominic Cleal (1):
+     * 3ea78c (PUP-1255) Fix assumed default file mode to 0644
+
+* Kylo Ginsberg (1):
+     * 4e10a0 (PUP-1255) Don't use POSIX defaults on Windows
+
+* Sam Kottler (2):
+     * c2acac (PUP-1351) Load ext/packaging/packaging.rake instead of ext/packaging/tasks/**
+     * b1b29a Bump the version to 2.7.25
+
+
+## Puppet 2.7.24
+
+2.7.24 is a security fix release of the Puppet 2.7 series. It has no other bug
+fixes or new features.
+
+### Security fixes
+
+#### [CVE-2013-4969 (Unsafe use of temp files in File type)](http://puppetlabs.com/security/cve/cve-2013-4969)
+
+Previous code used temp files unsafely by looking for a name it could use in a directory, and then later writing to that file, creating a vulnerability in which an attacker could make the name a symlink to another file and thereby cause puppet agent to overwrite something that it did not intend to.
 
 Puppet 2.7.23
 -----

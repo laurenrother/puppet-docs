@@ -62,7 +62,7 @@ Before installing, you must plan where to install these roles.
 
 #### The Puppet Agent Role
 
-This one is easy. The puppet agent will get installed on every node in your infrastructure that you want to manage with PE, including the master and any other nodes that run other PE roles. Don't be shy about installing it on existing infrastructure.
+This one is easy. The puppet agent will get installed on every node in your infrastructure that you want to manage with PE, including the master and any other nodes that run other PE roles. Don't be shy about installing it on existing infrastructure. And remember, if you are using a supported OS that is capable of using remote package repos, the easiest way to install PE agent is with standard *nix package management tools. To install the agent on other OS's (Solaris, AIX, RHEL 4, Windows) you'll need to use the installer script in the PE tarball.
 
 #### The Puppet Master Role
 
@@ -70,7 +70,7 @@ The puppet master compiles and serves configuration catalogs to puppet agent nod
 
 Start by installing the master. Typically, the puppet master is installed on a single node. However, under certain circumstances it may be preferable to run another master. For example, you may wish to run another master in order to provide HA or failover protection.
 
-> **Note:** Generally speaking, running multiple masters only becomes necessary when your infrastructure grows to a certain size. What that size is precisely will vary depending on how complex your infrastructure is, the number of classes and resources, etc. in your manifests, and so on. As a general rule of thumb, however, once you get to 800 nodes you will probably want to start separating out the various functions of the master, and once you get to 1200 nodes or so you will likely want to use multiple masters. In any case, you may wish to defer deploying multiple masters if you are just starting out with PE and want to keep your learning environment simple and straightforward. When you're ready to set up multiple masters, see [Using Multiple Puppet Masters](/guides/scaling_multiple_masters.html).
+> **Note:** Generally speaking, running multiple masters only becomes necessary when your infrastructure grows to a certain size. What that size is precisely will vary depending on how complex your infrastructure is, the number of classes and resources, etc. in your manifests, and so on. As a general rule of thumb, however, once you get to 800 nodes you will probably want to start separating out the various functions of the master, and once you get to 1200 nodes or so you will likely want to use multiple masters. In any case, you may wish to defer deploying multiple masters if you are just starting out with PE and want to keep your learning environment simple and straightforward. 
 
 Make sure that any machine you select for the master conforms to the [hardware system requirements](/pe/latest/install_system_requirements.html#hardware) and, in particular, ensure you have plenty of disk space, especially if you will be running the console and database roles on the same hardware.
 

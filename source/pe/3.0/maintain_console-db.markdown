@@ -26,13 +26,14 @@ The number of pending tasks shown in the console should start decreasing rapidly
 
 Optimizing the Database
 -----
+>**Note**: The following task is only available in PE 3.0.1. PE 3.0.0 users should refer to the [PostgreSQL workaround provided in the Known Issues](./appendix.html#dbrawoptimize-rake-task-does-not-work-in-pe-300).
 
 PostgreSQL should have `autovacuum=on` set by default. If you're having issues with the database growing too large and unwieldy, make sure this setting did not get turned off. In most cases, this should suffice. In some cases, more heavyweight maintenance measures may be needed (e.g. in cases of data corruption from hardware failures). To help with this, PE provides a rake task that performs advanced database maintenance.
 
 This task, `rake db:raw:optimize[mode]`,  runs in three modes:
 
   * `reindex` mode will run the REINDEX DATABASE command on the console database.
-  * `vacuum` model will run the VACUUM FULL command on the console database.
+  * `vacuum` mode will run the VACUUM FULL command on the console database.
     * Please note that this requires free space roughly equivalent to the current size of the database on disk.
   * `reindex+vacuum` will run both of the above commands on the console database. This is also the default mode if no mode is specified.
 

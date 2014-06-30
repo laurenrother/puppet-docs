@@ -178,6 +178,17 @@ Windows services support a short name and a display name. Make sure to use the s
 
 ## Error Messages
 
+* "`Error: Could not connect via HTTPS to https://forge.puppetlabs.com / Unable to verify the SSL certificate / The certificate may not be signed by a valid CA / The CA bundle included with OpenSSL may not be valid or up to date`"
+
+    This can occur when you run the `puppet module` subcommand on newly provisioned Windows nodes.
+
+    The Puppet Forge uses an SSL certificate signed by the GeoTrust Global CA certificate. Newly provisioned Windows nodes may not have that CA in their root CA store yet.
+
+    To resolve this and enable the `puppet module` subcommand on Windows nodes, do _one_ of the following:
+
+    * Run Windows Update and fetch all available updates, then visit <https://forge.puppetlabs.com> in your web browser. The web browser will notice that the GeoTrust CA is whitelisted for automatic download, and will add it to the root CA store.
+    * Download the "GeoTrust Global CA" certificate from [GeoTrust's list of root certificates](https://www.geotrust.com/resources/root-certificates/) and manually install it by running `certutil -addstore Root GeoTrust_Global_CA.pem`.
+
 * "`Service 'Puppet Agent' (puppet) failed to start. Verify that you have sufficient privileges to start system services.`"
 
     This can occur when installing puppet on a UAC system from a non-elevated account. Although the installer displays the UAC prompt to install puppet, it does not elevate when trying to start the service. Make sure to run from an elevated `cmd.exe` process when installing the MSI.
