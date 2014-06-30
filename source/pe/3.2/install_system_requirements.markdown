@@ -36,17 +36,17 @@ AIX                          | 5.3, 6.1, & 7.1                         | Power  
 
 <br>
 
-> *Note:* Upgrading your OS while PE is installed can cause problems with PE. To perform an OS upgrade, you'll need to uninstall PE, perform the OS upgrade, and then reinstall PE as follows:
+>**Note**: Upgrading your OS while PE is installed can cause problems with PE. To perform an OS upgrade, you’ll need to uninstall PE, perform the OS upgrade, and then reinstall PE as follows:
 >
-1. [Back up](/pe/latest/install_upgrading.html#before-upgrading-back-up-your-databases-and-other-pe-files) your databases and other PE files.
+>1. [Back up](./maintain_backup_restore.html#back-up-your-database-and-puppet-enterprise-files) your databases and other PE files.
 >
-2. Perform a complete [uninstall](/pe/latest/install_uninstalling.html) (including the -pd uninstaller option).
+>2. Perform a complete [uninstall](./install_uninstalling.html) (including the -p -d uninstaller option).
 >
-3. Upgrade your OS.
+>3. Upgrade your OS.
 >
-4. [Install PE](/pe/latest/install_basic.html).
+>4. [Install PE](./install_basic.html).
 >
-5. Restore your backup.
+>5. [Restore](./maintain_backup_restore.html#restore-your-database-and-puppet-enterprise-files) your backup.
 
 Hardware
 -----
@@ -104,6 +104,10 @@ Configure your firewalls to accommodate Puppet Enterprise's network traffic. In 
 * If you will be invoking orchestration commands from machines other than the puppet master, they will need to be able to reach the master on port **61613.** (**Note:** enabling other machines to invoke orchestration actions is possible but not supported in this version of Puppet Enterprise.)
 * If you will be running the console and puppet master on separate servers, the console server must be able to accept traffic from the puppet master (and the master must be able to send requests) on ports **443** and **8140.** The console server must also be able to send requests to the puppet master on port **8140,** both for retrieving its own catalog and for viewing archived file contents.
 
+### Symlinks
+
+The answer file no longer gives the option of whether to install symlinks. These are now automatically installed by packages. To allow the creation of symlinks, you need to ensure that /usr/local is writable.
+
 ### Dependencies and OS Specific Details
 
 This section details the packages that are installed from the various OS repos.  Unless you do not have internet access, you shouldn't need to worry about installing these manually, they will be set up during PE installation.
@@ -116,19 +120,6 @@ If you will be using your own instance of PostgreSQL (as opposed to the instance
 
 OpenSSL is a dependency required for PE. For RHEL 4, Windows, AIX, and Solaris 10 nodes, OpenSSL is included with PE; for all other platforms it is installed directly from the system repositories.
 
-***Amazon Linux AMI***
-
-All Nodes    | Master Nodes | Console Nodes | Console/Console DB Nodes | Cloud Provisioner Nodes
--------------|--------------|---------------|--------------------------|------------------------
-pciutils     | apr          | apr           | libjpeg                  | libxslt
-system-logos | apr-util     | apr-util      |                          | libxml2
-which        | curl         | curl          |                          |
-libxml2      | mailcap      | mailcap       |                          |
-dmidecode    | libjpeg      |               |                          |
-net-tools    |              |               |                          |
-virt-what    |              |               |                          |
-
-<br>
 ***Centos***
 
 All Nodes    | Master Nodes | Console Nodes | Console/Console DB Nodes | Cloud Provisioner Nodes

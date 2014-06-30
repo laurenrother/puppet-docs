@@ -15,7 +15,7 @@ canonical: "/pe/latest/install_basic.html"
 Downloading PE
 -----
 
-Start by downloading the [current version of Puppet Enterprise from the Puppet Labs website][downloadpe].
+Start by downloading the [current version of Puppet Enterprise and the GPG signature from the Puppet Labs website][downloadpe].
 
 ### Choosing an Installer Tarball
 
@@ -35,7 +35,7 @@ Puppet Enterprise is distributed in tarballs specific to your OS version and arc
 
 ### Verifying the Installer
 
-To verify the PE installer, you can import the Puppet Labs public key and run a cryptographic verification of the tarball you downloaded. The Puppet Labs public key is certified by Puppet and is available from public keyservers, such as `pgp.mit.edu`. You'll need to have GNuPG installed and you'll need to download the GPG signature (.asc file) associated with your PE version from the PE downloads page.
+To verify the PE installer, you can import the Puppet Labs public key and run a cryptographic verification of the tarball you downloaded. The Puppet Labs public key is certified by Puppet and is available from public keyservers, such as `pgp.mit.edu`. You'll need to have GNuPG installed and you'll need to download the GPG signature (.asc file) associated with your PE version from the PE downloads page. You can also access the GPG signature from the link in the email that is sent to you after you download PE.
 
 To import the Puppet Labs public key, run:
 
@@ -416,7 +416,7 @@ If these aren't already present, the installer will offer to automatically insta
 
 ### Convenience Links
 
-PE installs its binaries in `/opt/puppet/bin` and `/opt/puppet/sbin`, which aren't included in your default `$PATH`. If you want to make the Puppet tools more visible to all users, the installer can make symlinks in `/usr/local/bin` for the `facter, puppet, pe-man`, and `mco` binaries.
+PE installs its binaries in `/opt/puppet/bin` and `/opt/puppet/sbin`, which aren't included in your default `$PATH`.
 
 ### Confirming Installation
 
@@ -452,7 +452,7 @@ You can resolve this issue using the option below that corresponds with your par
 
 * **Option 2**
 
-    If you already have a package management/distribution system, you can use it to install agents by adding the agent packages to your repo. In this case, you can disable the PE-hosted repo feature altogether by removing the `pe-repo` class from your master.
+    If you already have a package management/distribution system, you can use it to install agents by adding the agent packages to your repo. In this case, you can disable the PE-hosted repo feature altogether by removing the `pe_repo` class from your master.
 
 * **Option 3**
 

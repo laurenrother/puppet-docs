@@ -25,6 +25,147 @@ If you're upgrading from a 3.x version of Puppet, you can usually just go for it
 
 If you're upgrading from Puppet 2.x, please [learn about major upgrades of Puppet first!][upgrade] We have important advice about upgrade plans and package management practices. The short version is: test first, roll out in stages, give yourself plenty of time to work with. Also, read the [release notes for Puppet 3][puppet_3] for a list of all the breaking changes made between the 2.x and 3.x series.
 
+Puppet 3.6.2
+-----
+
+[deprecated config-file environments]: #deprecation-config-file-environments-and-the-global-manifestmodulepathconfigversion-settings
+[CVE-2014-3248]: http://puppetlabs.com/security/cve/CVE-2014-3248
+[CVE-2014-3253]: http://puppetlabs.com/security/cve/cve-2014-3253
+
+Released June 10, 2014.
+
+Puppet 3.6.2 is a security and bug fix release in the Puppet 3.6 series. It addresses two security vulnerabilities and includes fixes for a number of fairly recent bugs. It also introduces a new `disable_warnings` setting to squelch deprecation messages.
+
+### Security Fixes
+
+#### [CVE-2014-3248 (An attacker could convince an administrator to unknowingly execute malicious code on platforms with Ruby 1.9.1 and earlier)][CVE-2014-3248]
+
+On platforms running Ruby 1.9.1 and earlier, previous code would load Ruby source files from the current working directory. This could lead to the execution of arbitrary code during puppet runs.
+
+#### [CVE-2014-3253 (Apache 2.4+ does not enforce CRL checks by default)][CVE-2014-3253]
+
+Apache 2.4+ uses the `SSLCARevocationCheck` setting to determine how to check the certificate revocation list (CRL) when establishing a connection. Unfortunately, the default setting is `none`, so a puppet master running Apache 2.4+ and Passenger will ignore the CRL by default. This release updates the Apache vhost settings to enable CRL checking.
+
+### Feature: Disabling Deprecation Warnings
+
+Puppet 3.6.0 [deprecated config-file environments][], leading to warnings during every puppet run for people who haven't yet switched to the new and improved [directory environments](environments.html). The high volume of duplicate deprecation warnings was deemed annoying enough that we've added a new feature to allow people to disable them.
+
+You can now use the new (optional) [`disable_warnings` setting](/references/3.6.2/configuration.html#disablewarnings) in puppet.conf or on the command line to suppress certain types of warnings. For now, `disable_warnings` can only be set to `deprecations`, but other warning types may be added in future versions. All warnings are still enabled by default.
+
+Related issue:
+
+- [PUP-2650: 3.6.1 issues "warning" message for deprecation](https://tickets.puppetlabs.com/browse/PUP-2650)
+
+### Fix for Directory Environments Under Webrick
+
+Puppet 3.6.1 introduced a bug that prevented directory environments from functioning correctly under Webrick, causing this error: "Attempted to pop, but already at root of the context stack." This release fixes the bug.
+
+Related issue:
+
+- [PUP-2659: Puppet stops working with error 'Attempted to pop, but already at root of the context stack.'](https://tickets.puppetlabs.com/browse/PUP-2659)
+
+### Fixes to `purge_ssh_keys`
+
+Two bugs were discovered with the new (as of 3.6.0) `purge_ssh_keys` attribute for the [user type](/references/3.6.latest/type.html#user). These bugs could prevent SSH keys from being purged under certain circumstances, and have been fixed.
+
+Related issues:
+
+- [PUP-2635: user purge_ssh_keys not purged](https://tickets.puppetlabs.com/browse/PUP-2635)
+- [PUP-2660: purging ssh_authorized_key fails because of missing user value](https://tickets.puppetlabs.com/browse/PUP-2660)
+
+### Default `environment_timeout` increased
+
+The previous default value for [`environment_timeout`](/references/3.6.latest/configuration.html#environmenttimeout) was 5s, which turns out to be way too short for a typical production environment. This release changes the default `environment_timeout` to 3m.
+
+Related issue:
+
+- [PUP-2639: Increase environment_timeout default.](https://tickets.puppetlabs.com/browse/PUP-2639)
+
+### General Bug Fixes
+
+- [PUP-2689: A node can't always collect its own exported resources](https://tickets.puppetlabs.com/browse/PUP-2689)
+- [PUP-2692: Puppet master passenger processes keep growing](https://tickets.puppetlabs.com/browse/PUP-2692)
+- [PUP-2705: Regression with external facts pluginsync not preserving executable bit](https://tickets.puppetlabs.com/browse/PUP-2705)
+
+Puppet 3.6.1
+-----
+
+[node termini]: ./subsystem_catalog_compilation.html#step-1-retrieve-the-node-object
+[enc]: /guides/external_nodes.html
+[allow_virtual]: /references/3.6.latest/type.html#package-attribute-allow_virtual
+[the main manifest]: ./dirs_manifest.html
+[multi_source]: /references/3.6.latest/type.html#file-attribute-source
+
+Released May 22, 2014.
+
+Puppet 3.6.1 is a bug fix release in the Puppet 3.6 series. It also makes the `transaction_uuid` more reliably available to extensions.
+
+### Changes to RPM Behavior With Virtual Packages
+
+In Puppet 3.5, the RPM package provider gained support for virtual packages. (That is, Puppet would handle package names the same way Yum does.) In this release, we added a new [`allow_virtual` attribute][allow_virtual] for `package`, which defaults to `false`. You'll have to set it to `true` to manage virtual packages.
+
+We did this because there are a few cases where a virtual package name can conflict with a non-virtual package name, and Puppet will manage the wrong thing. (Again, just like Yum would.) For example, if you set `ensure => absent` on the `inetd` package, Puppet might uninstall the `xinetd` package, since it provides the `inetd` virtual package.
+
+We had to treat that change as a regression, so we're currently defaulting `allow_virtual => false` to preserve compatibility in the Puppet 3 series. The default will change to `true` for Puppet 4. If you manage any packages with virtual/non-virtual name conflicts, you should set `allow_virtual => false` on a per-resource basis.
+
+If you don't have any resources with ambiguous virtual/non-virtual package names, you can enable the Puppet 4 behavior today by setting a resource default in [the main manifest][]:
+
+{% highlight ruby %}
+    Package {
+      allow_virtual => true,
+    }
+{% endhighlight %}
+
+- [PUP-2182: Package resource not working as expected in 3.5.0](https://tickets.puppetlabs.com/browse/PUP-2182)
+
+### Improvements to `transaction_uuid` in Reports and Node Termini
+
+Each catalog request from an agent node has a unique identifier, which persists through the entire run and ends up in the report. However, it was being omitted from reports when the catalog run failed, and [node termini][] had no access to it. This release adds it to failed reports and node object requests.
+
+(Note that `transaction_uuid` isn't available in the standard [ENC][] interface, but it is available to custom node termini.)
+
+- [PUP-2522: The transaction_uuid should be available to a node terminus](https://tickets.puppetlabs.com/browse/PUP-2522)
+- [PUP-2508: Failed compilation does not populate environment, transaction_uuid in report](https://tickets.puppetlabs.com/browse/PUP-2508)
+
+### Windows Start Menu Fixes
+
+If your Windows machine only had .NET 4.0 or higher, the "Run Facter" and "Run Puppet Agent" start menu items wouldn't work, stating that they needed an older version of .NET installed. This is now fixed.
+
+- [PUP-1951: Unable to "Run Facter" or "Run Puppet Agent" from Start Menu on Windows 8/2012 - Requires .NET Framework 3.5 installed](https://tickets.puppetlabs.com/browse/PUP-1951)
+
+### Improved Passenger Packages on Debian/Ubuntu
+
+The Apache vhost config we ship in the Debian/Ubuntu `puppetmaster-passenger` package had some non-optimal TLS settings. This has been improved.
+
+- [PUP-2582: Enable TLSv1.2 in apache vhost config](https://tickets.puppetlabs.com/browse/PUP-2582)
+
+
+### HTTP API Fixes
+
+A regression in Puppet 3.5 broke `DELETE` requests to Puppet's HTTP API. Also, a change in 3.6.0 made puppet agent log spurious warnings when using [multiple values for the `source` attribute][multi_source]. These bugs are both fixed.
+
+- [PUP-2505: REST API regression in DELETE request handling](https://tickets.puppetlabs.com/browse/PUP-2505)
+- [PUP-2584: Spurious warnings when using multiple file sources](https://tickets.puppetlabs.com/browse/PUP-2584) (regression in 3.6.0)
+
+
+### Directory Environment Fixes
+
+If puppet master was running under Rack (e.g. with Passenger) and the [environmentpath](./environments.html#about-environmentpath) was configured in the `[master]` section of puppet.conf (instead of in `[main]`), Puppet would use the wrong set of environments. This has been fixed.
+
+- [PUP-2607: environmentpath does not work in master section of config](https://tickets.puppetlabs.com/browse/PUP-2607)
+- [PUP-2610: Rack masters lose track of environment loaders](https://tickets.puppetlabs.com/browse/PUP-2610)
+
+
+### Future Parser Improvements
+
+This release fixes two compatibility bugs where the future parser conflicted with the 3.x parser. It also fixes a bug with the new EPP templating language.
+
+- [PUP-1894: Cannot render EPP templates from a module](https://tickets.puppetlabs.com/browse/PUP-1894)
+- [PUP-2568: Cannot use class references with upper cased strings](https://tickets.puppetlabs.com/browse/PUP-2568)
+- [PUP-2581: Interpolated variables with leading underscore regression](https://tickets.puppetlabs.com/browse/PUP-2581) (regression in 3.5.1)
+
+
+
 Puppet 3.6.0
 -----
 

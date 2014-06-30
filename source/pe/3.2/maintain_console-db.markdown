@@ -19,17 +19,17 @@ To prevent bloating in the console database, we recommend adding the `pe_console
 
 To access the `prune_upto` parameter:
 
-1. In the PE console, navigate to the "Groups" page.
+1. In the PE console, navigate to the __Groups__ page.
 
 2. Select the `puppet_console` group.
 
-3. From the `puppet_console` group page, click the "Edit" button.
+3. From the `puppet_console` group page, click the __Edit__ button.
 
 4. From the class list, select `pe_console_prune`.
 
 5. From the `pe_console_prune parameters` dialog, edit the parameters as needed. The `prune_upto` parameter is at the bottom of the list.  
 
-6. Click the "Done" button when finished.
+6. Click the __Done__ button when finished.
 
 
 Restarting the Background Tasks
@@ -56,7 +56,7 @@ PostgreSQL should have `autovacuum=on` set by default. If you're having issues w
 This task, `rake db:raw:optimize[mode]`,  runs in three modes:
 
   * `reindex` mode will run the REINDEX DATABASE command on the console database. This is also the default mode if no mode is specified.
-  * `vacuum` model will run the VACUUM FULL command on the console database.
+  * `vacuum` mode will run the VACUUM FULL command on the console database.
   * `reindex+vacuum` will run both of the above commands on the console database. 
 
 To run the task, change your working directory to `/opt/puppet/share/puppet-dashboard` and make sure your PATH variable contains `/opt/puppet/bin` (or use the full path to the rake binary). Then run the task `rake db:raw:optimize[mode]`. You can disregard any error messages about insufficient privileges to vacuum certain system objects because these objects should not require vacuuming. If you believe they do, you can do so manually by logging in to psql (or your tool of choice) as a database superuser.
@@ -116,7 +116,7 @@ The console uses a database user account to access its PostgreSQL database. If t
 2. On the database server (which may or may not be the same as the console, depending on your deployment's architecture) use the PostgreSQL administration tool of your choice to change the user's password. With the standard `psql` client, you can do this with:
 
         ALTER USER console PASSWORD '<new password>';
-3. Edit `/etc/puppetlabs/puppet-dashboard/database.yml` on the console server and change the `password:` line under "common" (or under "production," depending on your configuration) to contain the new password.
+3. Edit `/etc/puppetlabs/puppet-dashboard/database.yml` on the console server and change the `password:` line under __common__ (or under __production,__ depending on your configuration) to contain the new password.
 4. Start the `pe-httpd` service on the console server:
 
         $ sudo /etc/init.d/pe-httpd start

@@ -20,7 +20,7 @@ We recommend installing [Process Explorer](http://en.wikipedia.org/wiki/Process_
 
 ### Logging
 
-As of Puppet 2.7.x, messages from the `puppetd` log file are available via the Windows Event Viewer (choose "Windows Logs" > "Application"). To enable debugging, stop the puppet service and restart it as:
+As of Puppet 2.7.x, messages from the `puppetd` log file are available via the Windows Event Viewer (choose __Windows Logs__ > __Application__). To enable debugging, stop the puppet service and restart it as:
 
     c:\>sc stop puppet && sc start puppet --debug --trace
 
@@ -182,9 +182,12 @@ Windows services support a short name and a display name. Make sure to use the s
 
     This can occur when you run the `puppet module` subcommand on newly provisioned Windows nodes.
 
-    The Puppet Forge uses an SSL certificate signed by the GeoTrust Global CA certificate. Once a Windows system has run Windows Update at least once, it will include that CA cert in its root CA store; however, newly provisioned nodes may not have it yet.
+    The Puppet Forge uses an SSL certificate signed by the GeoTrust Global CA certificate. Newly provisioned Windows nodes may not have that CA in their root CA store yet.
 
-    To resolve this and enable the `puppet module` subcommand on Windows nodes, you can either run Windows Update and fetch all available updates, or you can download the "GeoTrust Global CA" certificate from [GeoTrust's list of root certificates](https://www.geotrust.com/resources/root-certificates/) and manually install it by running `certutil -addstore Root GeoTrust_Global_CA.pem`
+    To resolve this and enable the `puppet module` subcommand on Windows nodes, do _one_ of the following:
+
+    * Run Windows Update and fetch all available updates, then visit <https://forge.puppetlabs.com> in your web browser. The web browser will notice that the GeoTrust CA is whitelisted for automatic download, and will add it to the root CA store.
+    * Download the "GeoTrust Global CA" certificate from [GeoTrust's list of root certificates](https://www.geotrust.com/resources/root-certificates/) and manually install it by running `certutil -addstore Root GeoTrust_Global_CA.pem`.
 
 * "`Service 'Puppet Agent' (puppet) failed to start. Verify that you have sufficient privileges to start system services.`"
 

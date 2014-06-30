@@ -131,6 +131,10 @@ PE 3.2 offers a [tech preview](http://puppetlabs.com/services/tech-preview) of n
 > *Note*: Razor is included in Puppet Enterprise 3.2 as a tech preview. Puppet Labs tech previews provide early access to new technology still under development. As such, you should only use them for evaluation purposes and not in production environments. You can find more information on tech previews on the [tech preview support scope page](http://puppetlabs.com/services/tech-preview).
 
 
+#### Symlinks
+
+The answer file no longer gives the option of whether to install symlinks. These are now automatically installed by packages. To allow the creation of symlinks, you need to ensure that /usr/local is writable.
+
 #### Puppet Agent with Non-Root Privileges
 
 In some situations, a development team may wish to manage infrastructure on nodes to which they do not have root access. PE 3.2 lets users take advantage of PE's capabilities with puppet agents that can run without root privileges. You can learn more in the new [guide to non-root agents](deploy_nonroot-agent.html).
@@ -227,6 +231,10 @@ An issue with MCollective prevents correct uninstallation of packages on nodes r
 
 The issue is being tracked on [this support ticket](https://tickets.puppetlabs.com/browse/MCOP-14).
 
+### Upgrades to PE 3.2.x or Later Removes Commented Authentication Sections from `rubycas-server/config.yml` 
+
+If you are upgrading to PE 3.2.x or later, `rubycas-server/config.yml` will not contain the commented sections for the third-party services. We've provided the commented sections on [the console config page](./console_config.html#configuring-rubycas-server-config-yml), which you can copy and paste into `rubycas-server/config.yaml` after you upgrade.
+
 ### `pe_mcollective` Module Integer Parameter Issue
 
 The `pe_mcollective` module includes a parameter for the ActiveMQ heap size (`activemq_heap_mb`). A bug prevents this parameter from correctly accepting an integer when one is entered in the console. The problem can be avoided by placing the integer inside quote marks (e.g., `"10"`). This will cause Puppet to correctly validate the value when it is passed from the console.
@@ -239,7 +247,7 @@ If you need to use Safari, you may encounter the following dialog box the first 
 
 ![Safari Certificate Dialog][client_cert_dialog]
 
-If this happens, click "Cancel" to access the console. (In some cases, you may need to click "Cancel" several times.)
+If this happens, click __Cancel__ to access the console. (In some cases, you may need to click __Cancel__ several times.)
 
 This issue will be fixed in a future release.
 
