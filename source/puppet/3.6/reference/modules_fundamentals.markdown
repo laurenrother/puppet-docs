@@ -242,7 +242,7 @@ examplecorp-mymodule/tests
 examplecorp-mymodule/tests/init.pp
 ~~~
 
-For best practices about writing your module, please see the [Beginner's Guide to Modules](docs.puppetlabs.com/guides/module_guides/bgtm.html).
+For best practices about writing your module, please see the [Beginner's Guide to Modules](/guides/module_guides/bgtm.html).
 
 You also have the option of writing classes and defined types by hand and placing them in properly named manifest files as [described above](#module_layout). If you take this route, you **must** ensure that your metadata.json file is properly formatted or your module **will not work**.
 
