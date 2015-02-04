@@ -67,7 +67,7 @@ Or you will see that it has had no change.
 If you have written a module and would like to know what its quality score will be before you upload it to the Forge, we designed the rating evaluations to be reproducible. 
 
 ####Code Quality
-To reproduce the Code Quality score, you will need to install and run puppet lint.
+To reproduce the Code Quality score, you will need to install and run puppet lint from the module's root.
 
 ~~~
 gem install puppet-lint
@@ -76,10 +76,11 @@ puppet-lint `find ./manifests -name *.pp`
 ~~~
 
 ####Puppet Compatibility
-To reproduce the Puppet Compatibility score, you will need to run `puppet parser` against the latest release for a specific version of Puppet. 
+To reproduce the Puppet Compatibility score, you will need to run `puppet parser` from the module's root against the latest release for a specific version of Puppet. 
+
+If you are using Puppet 2.7+:
 
 ~~~
-puppet >= 2.7:
 puppet parser validate `find ./manifests -name *.pp`
 ~~~
 
@@ -96,7 +97,7 @@ puppet --parseonly --ignoreimports `find ./manifests -name *.pp`
 ~~~
 
 ####Metadata Quality
-To reproduce the Metadata Quality score, you will need to install and run the metadata linter.
+To reproduce the Metadata Quality score, you will need to install and run the metadata linter from the module's root.
 
 ~~~
 gem install metadata-json-lint
